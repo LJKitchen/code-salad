@@ -101,7 +101,10 @@ int binsea( int key, int a[], int lo, int hi ) {
    straightforward to convert it to an iterative formulation.  I
    recommend that you try this as an exercise.  The only tricky
    part is to get the re-assignment of variables right in the
-   iteration.
+   iteration.  Note that newer versions of gcc, with enough
+   optimization switched on, will compile recursive tail calls
+   into loops.  (Some languages, like Scheme, in effect require
+   that tail calls be compiled into jumps and iterations.)
 
    I think you'll appreciate that this algorithm is tighter than
    the usual version.  It relies on several conventions,
@@ -128,8 +131,9 @@ int binsea( int key, int a[], int lo, int hi ) {
       This convention of ranges being inclusive at the lower end
       and exclusive at the upper end is generally applicable,
       and often leads to more elegant formulations of algorthms,
-      for example in Quicksort.  That's one of the main reasons
-      it was adopted in Common Lisp.
+      particularly when you're subdividing a range, for example
+      in Quicksort.  That's one of the main reasons it was
+      adopted in Common Lisp.
 
    2. The version commonly seen explicitly checks whether the
       sought value (called "key" here) is found at the midpoint
@@ -173,7 +177,7 @@ int binsea( int key, int a[], int lo, int hi ) {
              instructions. Rather they have a "compare"
              instruction, which sets various "condition codes"
              (bits in the CPU), which can be tested by later
-             condtional jump instructions.  On such a computer,
+             conditional jump instructions.  On such a computer,
              with a good optimizing compiler, the two comparison
              tests of the common algorithm, could be compiled
              into a single comparison instruction (along with
