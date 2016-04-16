@@ -49,7 +49,8 @@
 #include <stdlib.h>
 #define NOT_FOUND (-1)
 
-int binsea( int key, int a[], int lo, int hi );
+int binsear( int key, int a[], int lo, int hi );
+int binsear( int key, int a[], int lo, int hi );
 int b[] = { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 };
 /* This is  C-ism to compute number of elements of the array */
 int m = sizeof(b) / sizeof(b[0]);
@@ -57,8 +58,8 @@ int m = sizeof(b) / sizeof(b[0]);
 int main ( char **argv, int argc ) {
 
   printf("Number of elements is %d\n", m);
-  printf("Test 1: %d\n", binsea( 30, b, 0, m ));
-  printf("Test 2: %d\n", binsea( 12, b, 0, m ));
+  printf("Test 1: %d\n", binseai( 30, b, 0, m ));
+  printf("Test 2: %d\n", binseai( 12, b, 0, m ));
   exit(0);
 
 }
@@ -72,7 +73,8 @@ int main ( char **argv, int argc ) {
 
 */
 
-int binsea( int key, int a[], int lo, int hi ) {
+/* Tail-recursive version */
+int binsear( int key, int a[], int lo, int hi ) {
 
   if ( hi-lo == 1 ) {
     if ( a[lo] == key ) {
@@ -91,24 +93,52 @@ int binsea( int key, int a[], int lo, int hi ) {
 
 }
 
+/* Iterative version */
+int binseai( int key, int a[], int lo, int hi ) {
+
+  while ( hi-lo > 1 ) {
+    int mid = (hi+lo)/2;
+    if ( key < a[mid] ) {
+      hi = mid;
+    } else {
+      lo = mid;
+    }
+  }
+  if ( a[lo] == key ) {
+    return lo;
+  } else {
+    return(NOT_FOUND);
+  }
+
+}
+
 
 /*
 
    Notes on a variant on binary search.
 
-   It's given here in a tail-recursive formulation, which is
-   clearest, but perhaps not so natural for C.  It's reasonably
-   straightforward to convert it to an iterative formulation.  I
-   recommend that you try this as an exercise.  The only tricky
-   part is to get the re-assignment of variables right in the
-   iteration.  Note that newer versions of gcc, with enough
-   optimization switched on, will compile recursive tail calls
-   into loops.  (Some languages, like Scheme, in effect require
-   that tail calls be compiled into jumps and iterations.)
+   It's given here first in a tail-recursive formulation, which
+   is clearest, but perhaps not so natural for C.  It's
+   reasonably straightforward to convert it to an iterative
+   formulation, as I've done.  The only tricky part is to get
+   the re-assignment of variables right in the iteration.  Note
+   that newer versions of gcc, with enough optimization switched
+   on, will compile recursive tail calls into loops
+   automatically.  (Some languages, like Scheme, in effect
+   require that tail calls be compiled into jumps and
+   iterations.)
 
-   I think you'll appreciate that this algorithm is tighter than
-   the usual version.  It relies on several conventions,
-   conditions, and observations:
+   (Also note that in C, function arguments are in effect local
+   variables initialized to the values passed in.  So it's
+   possible to assign to them, as I've done above, though some
+   regard it as bad style, and in some programming languages
+   function arguments are in effect read-only.  To avoid this,
+   you might need to copy the arguments lo and hi into
+   corresponding local variables.)
+
+   I think you'll appreciate that this algorithm is slightly
+   tighter than the usual version.  It relies on several
+   conventions, conditions, and observations:
 
    1. The range of the array lo to hi is inclusive at the lower
       bound but exclusive at the upper bound.  That is, hi
