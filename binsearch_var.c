@@ -50,7 +50,7 @@
 #define NOT_FOUND (-1)
 
 int binsear( int key, int a[], int lo, int hi );
-int binsear( int key, int a[], int lo, int hi );
+int binseai( int key, int a[], int lo, int hi );
 int b[] = { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 };
 /* This is  C-ism to compute number of elements of the array */
 int m = sizeof(b) / sizeof(b[0]);
@@ -85,9 +85,9 @@ int binsear( int key, int a[], int lo, int hi ) {
   } else {
     int mid = (hi+lo)/2;
     if ( key < a[mid] ) {
-      return binsea( key, a, lo, mid);
+      return binsear( key, a, lo, mid);
     } else {
-      return binsea( key, a, mid, hi);
+      return binsear( key, a, mid, hi);
     }
   }
 
