@@ -130,10 +130,10 @@ int binseai( int key, int a[], int lo, int hi ) {
 
    (Also note that in C, function arguments are in effect local
    variables initialized to the values passed in.  So it's
-   possible to assign to them, as I've done above, though some
-   regard it as bad style, and in some programming languages
-   function arguments are in effect read-only.  To avoid this,
-   you might need to copy the arguments lo and hi into
+   possible to assign to them, as I've done above — though some
+   regard it as bad style.  In some programming languages
+   function arguments are in effect read-only.  To deal with
+   this, you might need to copy the arguments lo and hi into
    corresponding local variables.)
 
    I think you'll appreciate that this algorithm is slightly
